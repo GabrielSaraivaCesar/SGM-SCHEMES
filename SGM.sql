@@ -91,7 +91,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `SGMDB`.`Lote` ;
 
 CREATE TABLE IF NOT EXISTS `SGMDB`.`Lote` (
-  `PK_idLote` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `PK_idLote` VARCHAR(45) NOT NULL,
   `Date` DATE NULL,
   `FK_idLoja` INT NOT NULL,
   PRIMARY KEY (`PK_idLote`, `FK_idLoja`),
@@ -110,7 +110,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `SGMDB`.`Medicamento` ;
 
 CREATE TABLE IF NOT EXISTS `SGMDB`.`Medicamento` (
-  `PK_SKU` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `PK_SKU` VARCHAR(45) NOT NULL,
   `Nome` VARCHAR(45) NULL,
   `Descricao` VARCHAR(255) NULL,
   `Preco` DOUBLE NULL,
@@ -127,8 +127,8 @@ CREATE TABLE IF NOT EXISTS `SGMDB`.`Item_Estoque` (
   `PK_idItemEstoque` INT NOT NULL AUTO_INCREMENT,
   `Quantidade` INT NULL,
   `DataVencimento` DATE NULL,
-  `FK_produtoSKU` INT UNSIGNED NOT NULL,
-  `FK_idLote` INT UNSIGNED NOT NULL,
+  `FK_produtoSKU` VARCHAR(45) NOT NULL,
+  `FK_idLote` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`PK_idItemEstoque`, `FK_produtoSKU`, `FK_idLote`),
   INDEX `fk_Lote_has_Medicamento_Medicamento1_idx` (`FK_produtoSKU` ASC) VISIBLE,
   INDEX `fk_Lote_has_Medicamento_Lote1_idx` (`FK_idLote` ASC) VISIBLE,
@@ -203,6 +203,7 @@ DELETE FROM SGMDB.USUARIO;
 INSERT INTO SGMDB.USUARIO VALUES(null, "Usuario gerente", 1);
 INSERT INTO SGMDB.USUARIO VALUES(null, "Usuario vendedor", 2);
 SELECT u.*, ut.descricao as 'Tipo' FROM SGMDB.USUARIO u JOIN SGMDB.USUARIO_TIPO ut ON ut.PK_idUsuario_Tipo = u.FK_Tipo_Usuario;
+SELECT * FROM SGMDB.USUARIO;
 
 DELETE FROM SGMDB.LOJA;
 INSERT INTO SGMDB.LOJA VALUES(null, "Matriz");
@@ -218,13 +219,13 @@ SELECT u.*, ut.descricao as 'Tipo', l.Nome as 'Loja' FROM SGMDB.USUARIO u
     JOIN sgmdb.loja l ON l.PK_idLoja = lu.FK_idLoja;
 
 DELETE FROM sgmdb.lote;
-INSERT INTO sgmdb.lote VALUES (null, '2021-10-20', 1);
-INSERT INTO sgmdb.lote VALUES (null, '2021-10-21', 1);
+INSERT INTO sgmdb.lote VALUES ("AA1", '2021-10-20', 1);
+INSERT INTO sgmdb.lote VALUES ("AA2", '2021-10-21', 1);
 SELECT * FROM sgmdb.lote;
 
 DELETE FROM sgmdb.medicamento;
-INSERT INTO sgmdb.medicamento VALUES (null, "Ritalina", "Desc", 43.89);
-INSERT INTO sgmdb.medicamento VALUES (null, "Rivotril", "Desc", 20.89);
+INSERT INTO sgmdb.medicamento VALUES ("SKRI1", "Ritalina", "Desc", 43.89);
+INSERT INTO sgmdb.medicamento VALUES ("SKRI2", "Rivotril", "Desc", 20.89);
 SELECT * FROM sgmdb.medicamento;
 
 DELETE FROM sgmdb.item_estoque;
